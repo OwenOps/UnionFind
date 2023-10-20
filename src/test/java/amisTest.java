@@ -1,17 +1,9 @@
 import org.junit.jupiter.api.Test;
-
-import java.nio.file.AccessMode;
-import java.util.Random;
-
+import Amis.Amis;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AmisTest {
     public static final int TAILLE = 10;
-    public static final int PETIT = 50;
-    public static final int MOYEN = 500;
-    public static final int GRAND = 5000;
-
-    //Fonctionne que avec TAILLE = 10
     @Test
     void toutTest() {
         testConstructeur();
@@ -20,7 +12,6 @@ class AmisTest {
         unionGroupe();
         sizeAndOptUnio();
     }
-
 
     void testConstructeur() {
         Amis b = new Amis();
@@ -32,6 +23,8 @@ class AmisTest {
 
         assertEquals(10, b.friendSize());
         assertEquals(10, c.friendSize());
+        b.ajouterAmis(2);
+        assertEquals(2, b.find(b.friendSize()-1));
     }
 
     void ajoutUnionMax(Amis t, int commencement) {
@@ -125,33 +118,5 @@ class AmisTest {
         ajoutUnionMax(b,2);
         b.union(8,0);
         assertEquals(2, b.find(0));
-    }
-
-    @Test
-    void autre() {
-        Amis a = new Amis(PETIT);
-        addRandomGroups(a);
-        System.out.println(a);
-    }
-
-    //Il y aura entre x et x + 1 groupes
-    //Dans chaque groupe entre x et x + 1 personnes
-    //Et on choisi une personne au hasard
-    void addRandomGroups(Amis a) {
-        Random nbrGroupe = new Random();
-        Random nbrPersGroupe = new Random();
-        Random index = new Random();
-        int tailleListe = a.friendSize();
-        int nbrGr = nbrGroupe.nextInt(tailleListe / 5,tailleListe / 2);
-
-        for (int i = 0; i < nbrGr; i++) {
-            int nbrPers = nbrPersGroupe.nextInt(tailleListe / 3);
-            int ind = index.nextInt(tailleListe);
-            for (int j = 0; j < nbrPers; j++) {
-                if (j + 1 == tailleListe)
-                    break;
-                a.union(ind,ind + 1);
-            }
-        }
     }
 }

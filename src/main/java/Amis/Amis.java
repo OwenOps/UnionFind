@@ -1,4 +1,7 @@
+package Amis;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Amis {
     private ArrayList<Integer> listeAmis;
@@ -11,7 +14,8 @@ public class Amis {
     }
 
     public Amis(int taille) {
-        this();
+        listeAmis = new ArrayList<>(taille);
+        groupTaille = new ArrayList<>(taille);
 
         assert (taille > 0);
         for (int i = 0; i < taille; i++) {
@@ -23,6 +27,17 @@ public class Amis {
     public void ajouterAmis(int n) {
         listeAmis.add(n);
         groupTaille.add(SOLO);
+    }
+
+    public void ajouterAmis(List<Integer> liste) {
+        if (liste.isEmpty())
+            return;
+
+        for (int a: liste) {
+            if (listeAmis.contains(a))
+                continue;
+            listeAmis.add(a);
+        }
     }
 
     public int find(int n) {
@@ -42,7 +57,6 @@ public class Amis {
 
     public void isolate(int n) {
         listeAmis.set(n, null);
-//        groupTaille.set(n , SOLO);
 
         //Veut dire que c'etait le chef vu que on a mis a null et il reste encore son groupe
         if (listeAmis.contains(n)) {
