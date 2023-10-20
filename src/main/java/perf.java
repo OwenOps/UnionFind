@@ -106,20 +106,24 @@ public class perf {
     //Il y aura entre x et x + 1 groupes
     //Dans chaque groupe entre x et x + 1 personnes
     //Et on choisi une personne au hasard
-    private static void addRandomGroups(Amis a) {
-        Random nbrGroupe = new Random();
-        Random nbrPersGroupe = new Random();
-        Random index = new Random();
+    public static void addRandomGroups(Amis a) {
+        Random random = new Random();
         int tailleListe = a.friendSize();
-        int nbrGr = nbrGroupe.nextInt(tailleListe / 5,tailleListe / 2);
+        int nbrGr = random.nextInt(tailleListe / 5, tailleListe / 2);
 
         for (int i = 0; i < nbrGr; i++) {
-            int nbrPers = nbrPersGroupe.nextInt(tailleListe / 3);
-            int ind = index.nextInt(tailleListe);
+            int nbrPers = random.nextInt(tailleListe / 3);
+            int ind = random.nextInt(tailleListe);
+
+            // Pour ajouter les personnes au groupe, nous allons choisir une personne au hasard
+            // (représentant du groupe) et ajouter les autres membres au groupe en utilisant l'opération Union.
+            int representant = a.find(ind);
+
             for (int j = 0; j < nbrPers; j++) {
-                if (j + 1 == tailleListe)
-                    break;
-                a.union(ind,ind + 1);
+                int membre = random.nextInt(tailleListe);
+                if (membre != representant) {
+                    a.union(representant, membre);
+                }
             }
         }
     }

@@ -14,7 +14,11 @@ public class main {
     public static final int [] TAILLE4 = {200_000_000, 250_000_000, 300_000_000, 350_000_000, 500_000_000, 1_000_000_000};
 
     public static void main(String[] args) {
-        perf2();
+        Random rd = new Random();
+//        Amis amis = new Amis(100, rd);
+//        System.out.println(amis);
+//        System.out.println(amis.plusGrandGroupe());
+//        perf2();
     }
 
     public static void perf1() {

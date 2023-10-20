@@ -1,7 +1,6 @@
 package Amis;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Amis {
     private ArrayList<Integer> listeAmis;
@@ -23,6 +22,17 @@ public class Amis {
             groupTaille.add(SOLO);
         }
     }
+
+//    public Amis(int taille, Random rd) {
+//        listeAmis = new ArrayList<>(taille);
+//        groupTaille = new ArrayList<>(taille);
+//
+//        for (int i = 0; i < taille; i++) {
+//            int r = rd.nextInt(taille);
+//            listeAmis.add(r);
+//            groupTaille.add(SOLO);
+//        }
+//    }
 
     public void ajouterAmis(int n) {
         listeAmis.add(n);
@@ -105,6 +115,8 @@ public class Amis {
     public int groupSize(int n) {
         return groupTaille.get(find(n));
     }
+
+    public int plusGrandGroupe() { return Collections.max(groupTaille);}
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
