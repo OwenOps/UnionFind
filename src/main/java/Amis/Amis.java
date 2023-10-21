@@ -67,6 +67,37 @@ public class Amis {
         listeAmis.set(n, n);
     }
 
+    public void isolate2(int n) {
+        if (groupTaille.get(n) > 1) {
+            int currentIndex = listeAmis.get(n);
+            int newChef = listeAmis.indexOf(n);
+
+            // Vérifie que l'index suivant n'est pas égal à l'index actuel
+            if (listeAmis.indexOf(newChef) == currentIndex) {
+                newChef = listeAmis.lastIndexOf(n);
+            }
+
+            //Change le groupe valeur du chef pour rediriger vers un autre chef
+            listeAmis.set(n, newChef);
+
+            //Met le nouveau chef
+            listeAmis.set(newChef, newChef);
+
+            //On fait un find de chaque element du groupe pour mettre a jour le groupe
+            int maj = 0;
+            while (maj != -1) {
+                find(maj);
+                maj = listeAmis.indexOf(n);
+            }
+            groupTaille.set(newChef, groupTaille.get(n) - 1);
+        }
+        else {
+            int chef = find(n);
+            groupTaille.set(chef, groupSize(n) - 1);
+        }
+        groupTaille.set(n , SOLO);
+        listeAmis.set(n, n);
+    }
     public void union(int g1, int g2) {
         int r1 = find(g1);
         int r2 = find(g2);

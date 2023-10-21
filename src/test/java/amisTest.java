@@ -59,15 +59,18 @@ class AmisTest {
 
         //De min a 5 ils sont meme groupe
         ajoutUnionMin(a, 5);
-
-        assertEquals(5,a.find(2));
-        assertEquals(9,a.find(9));
+        assertEquals(6, a.groupSize(5));
         a.isolate(0);
+        assertEquals(5, a.groupSize(5));
+        assertEquals(1, a.groupSize(0));
+        a.isolate(2);
+        assertEquals(4, a.groupSize(3));
+        System.out.println(a);
+
+        //Isolement d'un representant
         a.isolate(5);
-        assertEquals(5,a.find(5));
-        assertEquals(1,a.find(2));
-        assertEquals(1,a.find(3));
-        assertEquals(0,a.find(0));
+        assertEquals(1, a.groupSize(5));
+        assertEquals(3,a.groupSize(4));
     }
 
     void unionGroupe() {

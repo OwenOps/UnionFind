@@ -18,7 +18,7 @@ public class main {
 //    public static final int [] TAILLE4 = {200_000_000, 250_000_000, 300_000_000, 350_000_000, 500_000_000, 1_000_000_000};
 
     public static void main(String[] args) {
-        perf1();
+        perfIsolate();
     }
 
     public static void perf1() {
@@ -52,6 +52,26 @@ public class main {
             long startTime = System.nanoTime();
 
             amis.union(a/3, a-1);
+
+            long endTime = System.nanoTime();
+            long duration = (endTime - startTime) / MILISECONDES;
+            System.out.println("Performance : " + duration + " ms\n");
+        }
+        System.out.println("-----------------------FIN-----------------------");
+    }
+
+    public static void perfIsolate() {
+        System.out.println("-----------------------DEBUT-----------------------");
+        for (int a : TAILLE0) {
+            Amis amis = new Amis(a);
+            creationDeuxGroupes(a, amis);
+
+            //On isole le chef de chaque groupe
+            String formattedValue = String.format("%,d", a);
+            System.out.println("Taille : " + formattedValue);
+            long startTime = System.nanoTime();
+
+            amis.isolate(amis.find(a/3));
 
             long endTime = System.nanoTime();
             long duration = (endTime - startTime) / MILISECONDES;
