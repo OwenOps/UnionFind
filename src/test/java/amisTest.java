@@ -1,3 +1,4 @@
+import FonctionsUtiles.Utiles;
 import org.junit.jupiter.api.Test;
 import Amis.Amis;
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,9 +9,11 @@ class AmisTest {
     void toutTest() {
         testConstructeur();
         ajouterAmis();
+        find();
         isolate();
         unionGroupe();
         sizeAndOptUnio();
+        tailleGroupe();
     }
 
     void testConstructeur() {
@@ -18,39 +21,34 @@ class AmisTest {
         Amis c = new Amis(TAILLE);
 
         for (int i = 0; i < TAILLE; i++) {
-            b.ajouterAmis(i);
+            b.ajouterAmis();
         }
 
-        assertEquals(10, b.friendSize());
-        assertEquals(10, c.friendSize());
-        b.ajouterAmis(2);
-        assertEquals(2, b.find(b.friendSize()-1));
+        assertEquals(10, b.tabSize());
+        assertEquals(10, c.tabSize());
     }
 
-    void ajoutUnionMax(Amis t, int commencement) {
-        for (int i = commencement; i < TAILLE; i++) {
-            if ((i + 1) == TAILLE)
-                break;
-            t.union(i, i+1);
-        }
-    }
+    void find() {
+        Amis a = new Amis();
 
-    void ajoutUnionMin(Amis t, int commencement) {
-        for (int i = commencement; i > 0; i--) {
-            t.union(i, i-1);
+        for (int i = 0; i < TAILLE; i++) {
+            a.ajouterAmis();
         }
+
+        Utiles.ajoutUnionMax(a, TAILLE/2, TAILLE);
+        assertEquals(5, a.find(TAILLE-1));
     }
 
     void ajouterAmis() {
         Amis a = new Amis();
 
         for (int i = 0; i < TAILLE; i++) {
-            a.ajouterAmis(i);
+            a.ajouterAmis();
             assertEquals(1,a.groupSize(i));
         }
 
         //De 2 a Max ils sont meme groupe
-        ajoutUnionMax(a, 2);
+        Utiles.ajoutUnionMax(a, 2, TAILLE);
         assertEquals(8, a.groupSize(2));
     }
 
@@ -58,23 +56,26 @@ class AmisTest {
         Amis a = new Amis(TAILLE);
 
         //De min a 5 ils sont meme groupe
-        ajoutUnionMin(a, 5);
-
-        assertEquals(5,a.find(2));
-        assertEquals(9,a.find(9));
+        Utiles.ajoutUnionMin(a, 5);
+        assertEquals(6, a.groupSize(5));
         a.isolate(0);
+
+        assertEquals(5, a.groupSize(5));
+        assertEquals(1, a.groupSize(0));
+        a.isolate(2);
+        assertEquals(4, a.groupSize(3));
+
+        //Isolement d'un representant
         a.isolate(5);
-        assertEquals(5,a.find(5));
-        assertEquals(1,a.find(2));
-        assertEquals(1,a.find(3));
-        assertEquals(0,a.find(0));
+        assertEquals(1, a.groupSize(5));
+        assertEquals(3,a.groupSize(4));
     }
 
     void unionGroupe() {
         Amis a = new Amis(TAILLE);
 
-        ajoutUnionMin(a, 3);
-        ajoutUnionMax(a,7 );
+        Utiles.ajoutUnionMin(a, 3);
+        Utiles.ajoutUnionMax(a,7,TAILLE);
 
         assertEquals(3, a.find(0));
         assertEquals(7,a.find(9));
@@ -97,11 +98,29 @@ class AmisTest {
         }
     }
 
+    void tailleGroupe() {
+        Amis a = new Amis(TAILLE);
+        Utiles.ajoutUnionMax(a, 0,TAILLE);
+
+        assertEquals(TAILLE, a.groupSize(6));
+
+        for (int i = 0; i < TAILLE; i++) {
+            a.ajouterAmis();
+        }
+
+        a.union(7,18);
+        assertEquals(TAILLE+1,a.groupSize(0));
+        a.isolate(0);
+        assertEquals(TAILLE, a.groupSize(5));
+        assertEquals(1,a.groupSize(0));
+        assertEquals(a.plusGrandGroupe(), a.groupSize(1));
+    }
+
     void sizeAndOptUnio() {
         Amis a = new Amis(TAILLE);
 
-        ajoutUnionMin(a, 3);
-        ajoutUnionMax(a, 6);
+        Utiles.ajoutUnionMin(a, 3);
+        Utiles.ajoutUnionMax(a, 6,TAILLE);
 
         assertEquals(4, a.groupSize(0));
         assertEquals(4, a.groupSize(6));
@@ -115,7 +134,7 @@ class AmisTest {
         assertEquals(3,a.find(9));
 
         Amis b = new Amis(TAILLE);
-        ajoutUnionMax(b,2);
+        Utiles.ajoutUnionMax(b,2,TAILLE);
         b.union(8,0);
         assertEquals(2, b.find(0));
     }

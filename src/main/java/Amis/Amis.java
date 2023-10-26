@@ -23,19 +23,14 @@ public class Amis {
         }
     }
 
-    public void ajouterAmis(int n) {
-        listeAmis.add(n);
+    public void ajouterAmis() {
+        listeAmis.add(listeAmis.size());
         groupTaille.add(SOLO);
     }
 
-    public void ajouterAmis(List<Integer> liste) {
-        if (liste.isEmpty())
-            return;
-
-        listeAmis.addAll(liste);
-    }
-
     public int find(int n) {
+        enDehorsListe(n);
+
         int r = n;
         while (listeAmis.get(r) != r) {
             r = listeAmis.get(r);
@@ -50,21 +45,31 @@ public class Amis {
         return r;
     }
 
-    public void isolate(int n) {
-        listeAmis.set(n, null);
+    private void enDehorsListe(int n) { assert(n < listeAmis.size() && n >= 0); }
 
-        //Veut dire que c'etait le chef vu que on a mis a null et il reste encore son groupe
-        if (listeAmis.contains(n)) {
-            int index = listeAmis.indexOf(n);
-            int newChef = listeAmis.indexOf(n);
-            groupTaille.set(newChef, groupTaille.get(n) - 1);
-            while (index != -1) {
-                listeAmis.set(index, newChef);
-                index = listeAmis.indexOf(n);
+    public void isolate(int n) {
+        enDehorsListe(n);
+        int numGroup = listeAmis.get(n);
+
+        if (n == numGroup) {
+            int newChef = -1;
+            for (int i = 0; i < listeAmis.size(); i++) {
+                int currentGroup = listeAmis.get(i);
+
+                if (numGroup == currentGroup && i != numGroup) {
+                    if (newChef == -1) {
+                        newChef = i;
+                        groupTaille.set(newChef, groupTaille.get(n) - 1);
+                    }
+                    listeAmis.set(i, newChef);
+                }
             }
+            groupTaille.set(n, SOLO);
+        } else {
+            int representant = find(n);
+            groupTaille.set(representant, groupTaille.get(representant) - 1);
+            listeAmis.set(n, n);
         }
-        groupTaille.set(n , SOLO);
-        listeAmis.set(n, n);
     }
 
     public void union(int g1, int g2) {
@@ -93,7 +98,7 @@ public class Amis {
         }
     }
 
-    public int friendSize() {
+    public int tabSize() {
         return listeAmis.size();
     }
 
@@ -103,6 +108,7 @@ public class Amis {
 
     public int plusGrandGroupe() { return Collections.max(groupTaille); }
 
+    //Que pour petit tableau
     public String toString() {
         StringBuilder sb = new StringBuilder();
         int taille = listeAmis.size();
