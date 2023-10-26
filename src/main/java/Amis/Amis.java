@@ -23,19 +23,14 @@ public class Amis {
         }
     }
 
-    public void ajouterAmis(int n) {
-        listeAmis.add(n);
+    public void ajouterAmis() {
+        listeAmis.add(listeAmis.size());
         groupTaille.add(SOLO);
     }
 
-    public void ajouterAmis(List<Integer> liste) {
-        if (liste.isEmpty())
-            return;
-
-        listeAmis.addAll(liste);
-    }
-
     public int find(int n) {
+        enDehorsListe(n);
+
         int r = n;
         while (listeAmis.get(r) != r) {
             r = listeAmis.get(r);
@@ -50,54 +45,33 @@ public class Amis {
         return r;
     }
 
+    private void enDehorsListe(int n) { assert(n < listeAmis.size() && n >= 0); }
+
     public void isolate(int n) {
-        listeAmis.set(n, null);
+        enDehorsListe(n);
+        int numGroup = listeAmis.get(n);
 
-        //Veut dire que c'etait le chef vu que on a mis a null et il reste encore son groupe
-        if (listeAmis.contains(n)) {
-            int index = listeAmis.indexOf(n);
-            int newChef = listeAmis.indexOf(n);
-            groupTaille.set(newChef, groupTaille.get(n) - 1);
-            while (index != -1) {
-                listeAmis.set(index, newChef);
-                index = listeAmis.indexOf(n);
+        if (n == numGroup) {
+            int newChef = -1;
+            for (int i = 0; i < listeAmis.size(); i++) {
+                int currentGroup = listeAmis.get(i);
+
+                if (numGroup == currentGroup && i != numGroup) {
+                    if (newChef == -1) {
+                        newChef = i;
+                        groupTaille.set(newChef, groupTaille.get(n) - 1);
+                    }
+                    listeAmis.set(i, newChef);
+                }
             }
+            groupTaille.set(n, SOLO);
+        } else {
+            int representant = find(n);
+            groupTaille.set(representant, groupTaille.get(representant) - 1);
+            listeAmis.set(n, n);
         }
-        groupTaille.set(n , SOLO);
-        listeAmis.set(n, n);
     }
 
-    public void isolate2(int n) {
-        if (groupTaille.get(n) > 1) {
-            int currentIndex = listeAmis.get(n);
-            int newChef = listeAmis.indexOf(n);
-
-            // Vérifie que l'index suivant n'est pas égal à l'index actuel
-            if (listeAmis.indexOf(newChef) == currentIndex) {
-                newChef = listeAmis.lastIndexOf(n);
-            }
-
-            //Change le groupe valeur du chef pour rediriger vers un autre chef
-            listeAmis.set(n, newChef);
-
-            //Met le nouveau chef
-            listeAmis.set(newChef, newChef);
-
-            //On fait un find de chaque element du groupe pour mettre a jour le groupe
-            int maj = 0;
-            while (maj != -1) {
-                find(maj);
-                maj = listeAmis.indexOf(n);
-            }
-            groupTaille.set(newChef, groupTaille.get(n) - 1);
-        }
-        else {
-            int chef = find(n);
-            groupTaille.set(chef, groupSize(n) - 1);
-        }
-        groupTaille.set(n , SOLO);
-        listeAmis.set(n, n);
-    }
     public void union(int g1, int g2) {
         int r1 = find(g1);
         int r2 = find(g2);
@@ -124,7 +98,7 @@ public class Amis {
         }
     }
 
-    public int friendSize() {
+    public int tabSize() {
         return listeAmis.size();
     }
 
@@ -134,6 +108,7 @@ public class Amis {
 
     public int plusGrandGroupe() { return Collections.max(groupTaille); }
 
+    //Que pour petit tableau
     public String toString() {
         StringBuilder sb = new StringBuilder();
         int taille = listeAmis.size();

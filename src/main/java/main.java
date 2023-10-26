@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import Amis.Amis;
+import FonctionsUtiles.Utiles;
 
 public class main {
     public static final int MILISECONDES = 1000000;
@@ -14,15 +15,16 @@ public class main {
     public static final int[] TAILLE1 = {5_500_000, 6_000_000, 6_500_000, 7_000_000, 7_500_000, 8_000_000, 8_500_000};
     public static final int[] TAILLE2 = {9_000_000, 9_500_000, 10_000_000, 10_500_000, 11_000_000, 11_500_000, 12_000_000};
     public static final int[] TAILLE3 = {50_000_000, 100_000_000, 150_000_000, 150_500_000, 170_000_000};
+
     //Depasse la memoire
 //    public static final int [] TAILLE4 = {200_000_000, 250_000_000, 300_000_000, 350_000_000, 500_000_000, 1_000_000_000};
 
     public static void main(String[] args) {
-        perfIsolate();
+       perfFindSolo();
     }
 
-    public static void perf1() {
-        List<Consumer<Integer>> func = Arrays.asList(perf::find, perf::union);
+    public static void perfFindUnionIsolate() {
+        List<Consumer<Integer>> func = Arrays.asList(perf::find, perf::union, perf::isolate);
 
         for (Consumer<Integer> fun : func) {
             System.out.println("-----------------------DEBUT-----------------------");
@@ -41,11 +43,31 @@ public class main {
         }
     }
 
-    public static void perfUnionGroupe() {
+    public static void perfFindSolo() {
         System.out.println("-----------------------DEBUT-----------------------");
         for (int a : TAILLE3) {
             Amis amis = new Amis(a);
-            creationDeuxGroupes(a, amis);
+            Utiles.creationNGroupes(a, amis);
+
+            String formattedValue = String.format("%,d", a);
+            System.out.println("Taille : " + formattedValue);
+            long startTime = System.nanoTime();
+
+            Random rd = new Random();
+            amis.find(rd.nextInt(a));
+
+            long endTime = System.nanoTime();
+            long duration = (endTime - startTime) / MILISECONDES;
+            System.out.println("Performance : " + duration + " ms\n");
+        }
+        System.out.println("-----------------------FIN-----------------------");
+    }
+
+    public static void perfUnionDeuxGroupe() {
+        System.out.println("-----------------------DEBUT-----------------------");
+        for (int a : TAILLE3) {
+            Amis amis = new Amis(a);
+            Utiles.creationDeuxGroupes(a, amis);
 
             String formattedValue = String.format("%,d", a);
             System.out.println("Taille : " + formattedValue);
@@ -60,11 +82,11 @@ public class main {
         System.out.println("-----------------------FIN-----------------------");
     }
 
-    public static void perfIsolate() {
+    public static void perfIsolateRandom() {
         System.out.println("-----------------------DEBUT-----------------------");
-        for (int a : TAILLE0) {
+        for (int a : TAILLE3) {
             Amis amis = new Amis(a);
-            creationDeuxGroupes(a, amis);
+            Utiles.creationDeuxGroupes(a, amis);
 
             //On isole le chef de chaque groupe
             String formattedValue = String.format("%,d", a);
@@ -80,15 +102,22 @@ public class main {
         System.out.println("-----------------------FIN-----------------------");
     }
 
-    private static void creationDeuxGroupes(int taille, Amis amis) {
-        for (int i = 0; i < taille / 2; i++) {
-            amis.union(i, i+1);
-        }
+    public static void perfIsolateMaxGroupe() {
+        System.out.println("-----------------------DEBUT-----------------------");
+        for (int a : TAILLE3) {
+            Amis amis = new Amis(a);
+            Utiles.unGroupe(a, amis);
 
-        for (int i = (taille/2) + 1; i < taille; i++) {
-            if (i+1 == taille)
-                break;
-            amis.union(i,i+1);
+            String formattedValue = String.format("%,d", a);
+            System.out.println("Taille : " + formattedValue);
+            long startTime = System.nanoTime();
+
+            amis.isolate(amis.find(a/3));
+
+            long endTime = System.nanoTime();
+            long duration = (endTime - startTime) / MILISECONDES;
+            System.out.println("Performance : " + duration + " ms\n");
         }
+        System.out.println("-----------------------FIN-----------------------");
     }
 }
