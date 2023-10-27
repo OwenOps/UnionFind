@@ -16,11 +16,12 @@ public class main {
     public static final int[] TAILLE2 = {9_000_000, 9_500_000, 10_000_000, 10_500_000, 11_000_000, 11_500_000, 12_000_000};
     public static final int[] TAILLE3 = {50_000_000, 100_000_000, 150_000_000, 150_500_000, 170_000_000};
 
-    //Depasse la memoire
-//    public static final int [] TAILLE4 = {200_000_000, 250_000_000, 300_000_000, 350_000_000, 500_000_000, 1_000_000_000};
-
     public static void main(String[] args) {
-       perfIsolateRandom();
+       perfFindUnionIsolate();
+//       perfFindSolo();
+//       perfUnionDeuxGroupe();
+//       perfIsolateRandom();
+//       perfIsolateRandom();
     }
 
     public static void perfFindUnionIsolate() {
