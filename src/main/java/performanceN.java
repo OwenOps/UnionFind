@@ -2,7 +2,7 @@ import Amis.Amis;
 
 import java.util.Random;
 
-public class perf {
+public class performanceN {
     public static final int MILISECONDES = 1000000;
     public static void union(int taille) {
         Amis amis = new Amis(taille);

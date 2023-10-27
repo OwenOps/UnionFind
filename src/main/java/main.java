@@ -20,11 +20,11 @@ public class main {
 //    public static final int [] TAILLE4 = {200_000_000, 250_000_000, 300_000_000, 350_000_000, 500_000_000, 1_000_000_000};
 
     public static void main(String[] args) {
-       perfFindSolo();
+       perfIsolateRandom();
     }
 
     public static void perfFindUnionIsolate() {
-        List<Consumer<Integer>> func = Arrays.asList(perf::find, perf::union, perf::isolate);
+        List<Consumer<Integer>> func = Arrays.asList(performanceN::find, performanceN::union, performanceN::isolate);
 
         for (Consumer<Integer> fun : func) {
             System.out.println("-----------------------DEBUT-----------------------");
