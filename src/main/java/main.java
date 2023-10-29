@@ -16,14 +16,20 @@ public class main {
     public static final int[] TAILLE2 = {9_000_000, 9_500_000, 10_000_000, 10_500_000, 11_000_000, 11_500_000, 12_000_000};
     public static final int[] TAILLE3 = {50_000_000, 100_000_000, 150_000_000, 150_500_000, 170_000_000};
 
+    // Appels de différentes méthodes de performance
     public static void main(String[] args) {
-       perfFindUnionIsolate();
+//       perfFindUnionIsolate();
 //       perfFindSolo();
 //       perfUnionDeuxGroupe();
-//       perfIsolateRandom();
-//       perfIsolateRandom();
+       perfIsolateRandom();
+//       perfIsolateMaxGroupe();
     }
 
+    /**
+     * Mesure les performances des méthodes find, union et isolate pour différentes tailles de groupes
+     * en faisant N fois les methodes.
+     * Appelle les fonctions de la class performanceN.
+     */
     public static void perfFindUnionIsolate() {
         List<Consumer<Integer>> func = Arrays.asList(performanceN::find, performanceN::union, performanceN::isolate);
 
@@ -44,6 +50,9 @@ public class main {
         }
     }
 
+    /**
+     * Mesure les performances de la méthode find pour différentes tailles de groupes.
+     */
     public static void perfFindSolo() {
         System.out.println("-----------------------DEBUT-----------------------");
         for (int a : TAILLE3) {
@@ -64,6 +73,9 @@ public class main {
         System.out.println("-----------------------FIN-----------------------");
     }
 
+    /**
+     * Mesure les performances de la méthode union pour différentes tailles de groupes.
+     */
     public static void perfUnionDeuxGroupe() {
         System.out.println("-----------------------DEBUT-----------------------");
         for (int a : TAILLE3) {
@@ -83,6 +95,10 @@ public class main {
         System.out.println("-----------------------FIN-----------------------");
     }
 
+    /**
+     * Mesure les performances de la méthode isolate en isolant le representant
+     * d'un demi groupe de Taille / 2.
+     */
     public static void perfIsolateRandom() {
         System.out.println("-----------------------DEBUT-----------------------");
         for (int a : TAILLE3) {
@@ -103,6 +119,10 @@ public class main {
         System.out.println("-----------------------FIN-----------------------");
     }
 
+    /**
+     * Mesure les performances de la méthode isolate en isolant le chef
+     * d'un seul et meme grand groupe de Taille N;
+     */
     public static void perfIsolateMaxGroupe() {
         System.out.println("-----------------------DEBUT-----------------------");
         for (int a : TAILLE3) {

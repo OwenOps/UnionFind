@@ -64,11 +64,13 @@ class AmisTest {
         assertEquals(1, a.groupSize(0));
         a.isolate(2);
         assertEquals(4, a.groupSize(3));
+        assertEquals(2, a.find(2));
 
         //Isolement d'un representant
         a.isolate(5);
         assertEquals(1, a.groupSize(5));
         assertEquals(3,a.groupSize(4));
+        assertEquals(1,a.find(3));
     }
 
     void unionGroupe() {
